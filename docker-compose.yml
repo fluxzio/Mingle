@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:latest
+    env_file:
+      - .env.docker
+    ports:
+      - 5432:5432
+  core:
+    build: /core/
+    env_file:
+      - .env.docker
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+
+  app:
+    build: /mingle/
+    ports:
+      - 5173:5173
+    depends_on:
+      - core
+
+    
