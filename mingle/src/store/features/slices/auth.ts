@@ -4,6 +4,7 @@ import { AuthState } from "../../../interfaces";
 
 // Define the initial state using that type
 const initialState: AuthState = {
+	isAuth: false,
 	user_id: null,
 	username: null,
 	password: null,
@@ -15,13 +16,17 @@ export const counterSlice = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
-		setAccessToken: (state,action: PayloadAction<{access: string}>) => {
-
+		setAccessToken: (
+			state,
+			action: PayloadAction<{ access: string }>
+		) => {},
+		setRefreshToken: (
+			state,
+			action: PayloadAction<{ refresh: string }>
+		) => {},
+		setAuth: (state, action: PayloadAction<{ flag: boolean }>) => {
+			
 		},
-		setRefreshToken: (state,action: PayloadAction<{refresh: string}>) => {
-
-		}
-
 	},
 });
 
