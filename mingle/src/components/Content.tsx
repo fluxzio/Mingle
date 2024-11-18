@@ -1,41 +1,48 @@
-import { Layout, List } from "antd";
-import React from "react";
+import { Layout, List, Modal, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 import Post from "./Post";
-const contentStyle: React.CSSProperties = {
-	overflow: "auto",
-	display: 'flex',
-	height: "100%",
-	width: '100%',
-	boxSizing: "border-box",
-	marginLeft: 8,
-	padding: 8,
-};
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { toggleCommentSection } from "../store/features/slices/comments";
+import CommentSection from "./CommentSection";
+import { contentStyle, listStyles } from "../styles/comment";
+import Stories from "./Stories";
 
-const listStyles: React.CSSProperties = {
-	display: "flex",
-	justifyContent: 'center',
-};
+
 const Content: React.FC = () => {
+	const commentIsOpen = useAppSelector(state => state.comments.isOpenCommentSection)
+	const dispath = useAppDispatch();
+	const toggleComments = (flag: boolean) => {
+		dispath(toggleCommentSection({ flag: flag }));
+	};
 	return (
-		<Layout style={contentStyle}>
-			<List style={listStyles}>
-				<List.Item>
-					<Post />
-				</List.Item>
-				<List.Item>
-					<Post />
-				</List.Item>
-				<List.Item>
-					<Post />
-				</List.Item>
-				<List.Item>
-					<Post />
-				</List.Item>
-				<List.Item>
-					<Post />
-				</List.Item>
-			</List>
-		</Layout>
+		<>
+			<Layout style={contentStyle}>
+				<List style={listStyles}>
+					<List.Item>
+						<Post />
+					</List.Item>
+					<List.Item>
+						<Post />
+					</List.Item>
+					<List.Item>
+						<Post />
+					</List.Item>
+					<List.Item>
+						<Post />
+					</List.Item>
+				</List>
+			</Layout>
+			<Modal
+				title={<Typography>Комментарии</Typography>}
+				open={commentIsOpen}
+				onCancel={() => {
+					toggleComments(false);
+				}}
+				footer={false}
+			>
+				<CommentSection />
+			</Modal>
+		</>
 	);
 };
 

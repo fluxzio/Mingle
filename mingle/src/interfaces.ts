@@ -8,3 +8,8 @@ export interface AuthState {
 	photo: string | null;
 	tokens: JWTTokenT | {};
 }
+
+export interface CommentState {
+	isOpenCommentSection: boolean,
+}
+

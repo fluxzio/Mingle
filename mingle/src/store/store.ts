@@ -3,10 +3,11 @@ import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
 import { persistReducer, persistStore } from "redux-persist";
 import authReducer from "./features/slices/auth"
-
+import commentsReducer from "./features/slices/comments";
 
 const reducers = combineReducers({
 	auth: authReducer,
+	comments: commentsReducer,
 });
 
 const persistConfig = {

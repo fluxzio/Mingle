@@ -1,14 +1,41 @@
-import { Layout } from 'antd';
-import React from 'react'
-const sidebarStyle: React.CSSProperties = {
-    height: "100%",
-    width: '50%',
-    boxSizing: "border-box",
-};
-const Sidebar: React.FC = () => {
-  return <Layout style={sidebarStyle}>
-        
-  </Layout>;
-}
+import { sidebarStyle } from "../styles/bars";
+import { Layout, Space, Button } from "antd";
+import React from "react";
+import {
+	HomeOutlined,
+	LogoutOutlined,
+	SettingOutlined,
+	UserOutlined,
+	WechatWorkOutlined,
+} from "@ant-design/icons";
 
-export default Sidebar
+const Sidebar: React.FC = () => {
+	return (
+		<Layout style={sidebarStyle}>
+			<Space direction="vertical" style={{ rowGap: 24 }}>
+				<Button type="text" size="large" style={{ fontSize: 24 }}>
+					<HomeOutlined />
+					Главная
+				</Button>
+				<Button type="text" size="large" style={{ fontSize: 24 }}>
+					<WechatWorkOutlined />
+					Переписки
+				</Button>
+				<Button type="text" size="large" style={{ fontSize: 24 }}>
+					<SettingOutlined />
+					Настройки
+				</Button>
+				<Button type="text" size="large" style={{ fontSize: 24 }}>
+					<UserOutlined />
+					Аккаунт
+				</Button>
+				<Button type="text" size="large" style={{ fontSize: 24 }}>
+					<LogoutOutlined />
+					Выйти
+				</Button>
+			</Space>
+		</Layout>
+	);
+};
+
+export default Sidebar;

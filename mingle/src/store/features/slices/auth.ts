@@ -12,7 +12,7 @@ const initialState: AuthState = {
 	tokens: {}
 };
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
@@ -30,6 +30,6 @@ export const counterSlice = createSlice({
 	},
 });
 
-export const { } = counterSlice.actions;
+export const { } = authSlice.actions;
 
-export default counterSlice.reducer;
+export default authSlice.reducer;
