@@ -1,6 +1,6 @@
 export const sidebarStyle: React.CSSProperties = {
 	height: "100%",
-	width: "45%",
+	width: "40%",
 	boxSizing: "border-box",
     background: 'transparent',
     display: 'flex',
@@ -11,6 +11,9 @@ export const sidebarStyle: React.CSSProperties = {
 
 export const friendsStyle: React.CSSProperties = {
 	height: "100%",
-	width: "45%",
+	width: "50%",
 	boxSizing: "border-box",
+	display: 'flex',
+	flexDirection: 'column',
+	padding: 24
 };
