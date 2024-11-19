@@ -1,11 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
 from .serializers import UserSerializer
 
 class UserDataView(APIView):
     """ View to get user data """
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get(self, request):
         serializer = UserSerializer(request.user)
@@ -17,3 +17,5 @@ class UserSendEmailView(APIView):
         """ TODO: Setup email service """
         return Response({})
         
+
+

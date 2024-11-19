@@ -1,11 +1,10 @@
-import { Layout, List, Modal, Typography } from "antd";
-import React, { useEffect, useState } from "react";
-import Post from "./Post";
+import { Layout, Modal, Typography } from "antd";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { toggleCommentSection } from "../store/features/slices/comments";
 import CommentSection from "./CommentSection";
-import { contentStyle, listStyles } from "../styles/comment";
-import Stories from "./Stories";
+import { contentStyle } from "../styles/comment";
+import PostsList from "./PostsList";
 
 
 const Content: React.FC = () => {
@@ -17,20 +16,7 @@ const Content: React.FC = () => {
 	return (
 		<>
 			<Layout style={contentStyle}>
-				<List style={listStyles}>
-					<List.Item>
-						<Post />
-					</List.Item>
-					<List.Item>
-						<Post />
-					</List.Item>
-					<List.Item>
-						<Post />
-					</List.Item>
-					<List.Item>
-						<Post />
-					</List.Item>
-				</List>
+				<PostsList />
 			</Layout>
 			<Modal
 				title={<Typography>Комментарии</Typography>}

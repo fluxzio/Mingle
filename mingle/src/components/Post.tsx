@@ -20,9 +20,9 @@ import { useAppDispatch } from "../store/hooks";
 import {
 	toggleCommentSection,
 } from "../store/features/slices/comments";
-import { commentModalProps } from "../types";
+import { postsI } from "@/interfaces";
 
-const Post: React.FC<commentModalProps> = () => {
+const Post: React.FC<postsI> = () => {
 	const dispath = useAppDispatch();
 	const toggleComments = (flag: boolean) => {
 		dispath(toggleCommentSection({ flag: flag }));

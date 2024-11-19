@@ -13,3 +13,15 @@ export interface CommentState {
 	isOpenCommentSection: boolean,
 }
 
+export interface UserI {
+	id: number;
+	username: string;
+	photo: string | null;
+}
+
+export interface postsI {
+	id: number;
+	content: string;
+	created_at: string;
+	user: UserI;
+}

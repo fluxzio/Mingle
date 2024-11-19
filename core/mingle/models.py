@@ -9,9 +9,6 @@ class Post(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     content = models.TextField(max_length=3000)
     created_at = models.DateField(auto_now_add=True)
-    # Исправленный момент: использование ManyToMany для лайков
-    likes = models.ForeignKey(
-        to='Like', blank=True,on_delete=models.CASCADE,null=True, related_name='liked_posts')
 
     def __str__(self):
         return f"Post by {self.user.username} created at {self.created_at}"
