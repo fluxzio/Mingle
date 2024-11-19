@@ -22,7 +22,7 @@ import {
 } from "../store/features/slices/comments";
 import { postsI } from "@/interfaces";
 
-const Post: React.FC<postsI> = () => {
+const Post: React.FC<postsI> = ({user,created_at}) => {
 	const dispath = useAppDispatch();
 	const toggleComments = (flag: boolean) => {
 		dispath(toggleCommentSection({ flag: flag }));
@@ -38,8 +38,8 @@ const Post: React.FC<postsI> = () => {
 							icon={<UserOutlined />}
 						/>
 						<Space direction="vertical" style={{ rowGap: 0 }}>
-							<Typography>Test user</Typography>
-							<Typography>10 minutes ago</Typography>
+							<Typography>{user.username}</Typography>
+							<Typography>{created_at}</Typography>
 						</Space>
 					</Space>
 					<Button type="text">
