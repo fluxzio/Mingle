@@ -17,15 +17,13 @@ import {
 	toolSectionStyles,
 } from "../styles/post";
 import { useAppDispatch } from "../store/hooks";
-import {
-	toggleCommentSection,
-} from "../store/features/slices/comments";
-import { postsI } from "@/interfaces";
+import { toggleCommentSection } from "../store/features/slices/comments";
+import { postI } from "@/interfaces";
 
-const Post: React.FC<postsI> = ({user,created_at}) => {
+const Post: React.FC<postI> = ({ user, created_at,id }) => {
 	const dispath = useAppDispatch();
 	const toggleComments = (flag: boolean) => {
-		dispath(toggleCommentSection({ flag: flag }));
+		dispath(toggleCommentSection({ flag: flag, postID: id }));
 	};
 	return (
 		<Card size="small" style={postStyles}>

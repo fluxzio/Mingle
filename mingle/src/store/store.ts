@@ -1,7 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
-import { persistReducer, persistStore } from "redux-persist";
 import authReducer from "./features/slices/auth"
 import commentsReducer from "./features/slices/comments";
 import { postAPI } from "../services/postService";
@@ -13,15 +11,8 @@ const reducers = combineReducers({
 	[postAPI.reducerPath]: postAPI.reducer
 });
 
-const persistConfig = {
-	key: "root",
-	storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, reducers);
-
 export const store = configureStore({
-	reducer: persistedReducer,
+	reducer: reducers,
 	middleware: (getDefaultMiddleware) => {
 		const defaultMiddleware = getDefaultMiddleware({
 			serializableCheck: false,
@@ -30,7 +21,6 @@ export const store = configureStore({
 	}
 });
 
-export const persistor = persistStore(store)
 setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>

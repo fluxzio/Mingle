@@ -2,7 +2,6 @@ import { listStyles } from "../styles/comment";
 import { List } from "antd";
 import React, { useEffect } from "react";
 import Post from "./Post";
-import { postsI } from "../interfaces";
 import { postAPI } from "../services/postService";
 
 

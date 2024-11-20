@@ -1,6 +1,7 @@
-from mingle.models import Post
+from .models import *
 from rest_framework import serializers
 from users.models import User
+
 
 class UserPostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,3 +14,9 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'content','created_at','user']
 
+        
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserPostSerializer()
+    class Meta:
+        model = Comment
+        fields = ['id', 'content', 'created_at','user']

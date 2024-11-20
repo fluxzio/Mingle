@@ -4,6 +4,7 @@ import { CommentState } from "../../../interfaces";
 // Define the initial state using that type
 const initialState: CommentState = {
     isOpenCommentSection: false,
+	activePostID: null
 };
 
 export const commentsSlice = createSlice({
@@ -12,9 +13,10 @@ export const commentsSlice = createSlice({
 	reducers: {
 		toggleCommentSection: (
 			state,
-			action: PayloadAction<{ flag: boolean }>
+			action: PayloadAction<{ flag: boolean, postID: number | null }>
 		) => {
 			state.isOpenCommentSection = action.payload.flag;
+			state.activePostID = action.payload.postID;
 		},
 	},
 });

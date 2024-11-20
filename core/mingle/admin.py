@@ -14,3 +14,8 @@ class LikeModelAdmin(admin.ModelAdmin):
 @admin.register(Friend)
 class FriendModelAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Comment)
+class CommentModelAdmin(admin.ModelAdmin):
+    pass

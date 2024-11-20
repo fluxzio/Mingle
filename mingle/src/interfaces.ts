@@ -1,7 +1,7 @@
 import { JWTTokenT } from "./types";
 
 export interface AuthState {
-	isAuth: boolean,
+	isAuth: boolean;
 	user_id: number | null;
 	username: string | null;
 	password: string | null;
@@ -10,7 +10,8 @@ export interface AuthState {
 }
 
 export interface CommentState {
-	isOpenCommentSection: boolean,
+	isOpenCommentSection: boolean;
+	activePostID: number | null
 }
 
 export interface UserI {
@@ -19,7 +20,14 @@ export interface UserI {
 	photo: string | null;
 }
 
-export interface postsI {
+export interface postI {
+	id: number;
+	content: string;
+	created_at: string;
+	user: UserI;
+}
+
+export interface commentI {
 	id: number;
 	content: string;
 	created_at: string;

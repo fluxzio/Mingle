@@ -11,7 +11,7 @@ const Content: React.FC = () => {
 	const commentIsOpen = useAppSelector(state => state.comments.isOpenCommentSection)
 	const dispath = useAppDispatch();
 	const toggleComments = (flag: boolean) => {
-		dispath(toggleCommentSection({ flag: flag }));
+		dispath(toggleCommentSection({ flag: flag,postID: null }));
 	};
 	return (
 		<>

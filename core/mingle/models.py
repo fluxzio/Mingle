@@ -13,7 +13,10 @@ class Post(models.Model):
     def __str__(self):
         return f"Post by {self.user.username} created at {self.created_at}"
 
-
+    class Meta:
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
+        
 class Like(models.Model):
     LIKE_CHOICES = [
         ('like', 'Like'),
@@ -31,6 +34,9 @@ class Like(models.Model):
     def __str__(self):
         return f"{self.user.username} {self.like_type}d post {self.post.id}"
 
+    class Meta:
+        verbose_name = 'Лайк'
+        verbose_name_plural = 'Лайки'
 
 class Friend(models.Model):
     user = models.ForeignKey(
@@ -56,6 +62,10 @@ class Friend(models.Model):
     def __str__(self):
         return f"{self.user.username} is friends with {self.friend.username}"
 
+    class Meta:
+        verbose_name = 'Друг'
+        verbose_name_plural = 'Друзья'
+
 class SavedPost(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
@@ -73,3 +83,17 @@ class SharedPost(models.Model):
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE,related_name='shared_posts')
     shared_friend = models.ForeignKey(to=User,on_delete=models.CASCADE,related_name='shared_friends')
     share_string = models.URLField()
+    
+    
+class Comment(models.Model):
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Комментарий от {self.user.username}, оставлен {self.created_at}"
+    
+    class Meta:
+        verbose_name = 'Коментарий'
+        verbose_name_plural = 'Коментарий'
