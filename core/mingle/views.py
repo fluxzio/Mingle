@@ -20,3 +20,10 @@ class CommentsListView(ListAPIView):
     def get_queryset(self):
         post_id = self.kwargs.get('post_id')
         return self.queryset.filter(post_id=post_id)
+
+
+class RecommendedFriendsListView(ListAPIView):
+    queryset = Friend.objects.all()
+    serializer_class = FriendSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    

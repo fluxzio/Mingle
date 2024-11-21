@@ -5,7 +5,8 @@ import React from "react";
 const storiesLayoutStyles: React.CSSProperties = {
 	width: "100%",
 	background: "transparent",
-	padding: 16,
+	paddingInline: 72,
+	paddingTop: 24,
 	boxSizing: 'border-box',
 };
 
@@ -13,20 +14,8 @@ const Stories: React.FC = () => {
 	return (
 		<Layout style={storiesLayoutStyles}>
 			<Space>
-				<Avatar>
-					<UserOutlined />
-				</Avatar>
-				<Avatar>
-					<UserOutlined />
-				</Avatar>
-				<Avatar>
-					<UserOutlined />
-				</Avatar>
-				<Avatar>
-					<UserOutlined />
-				</Avatar>
-				<Avatar>
-					<UserOutlined />
+				<Avatar size={'large'}>
+					<UserOutlined  />
 				</Avatar>
 			</Space>
 		</Layout>

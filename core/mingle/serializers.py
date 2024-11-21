@@ -20,3 +20,10 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'content', 'created_at','user']
+        
+
+class FriendSerializer(serializers.ModelSerializer):
+    friend = UserPostSerializer()
+    class Meta:
+        model = Friend
+        fields = ['id','friend',]
