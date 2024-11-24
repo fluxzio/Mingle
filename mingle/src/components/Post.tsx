@@ -19,8 +19,10 @@ import {
 import { useAppDispatch } from "../store/hooks";
 import { toggleCommentSection } from "../store/features/slices/comments";
 import { postI } from "@/interfaces";
+import { GetFormattedTime } from "../utils/time";
+import PostMediaList from "./PostMediaList";
 
-const Post: React.FC<postI> = ({ user, created_at,id }) => {
+const Post: React.FC<postI> = ({ user, created_at, id, media }) => {
 	const dispath = useAppDispatch();
 	const toggleComments = (flag: boolean) => {
 		dispath(toggleCommentSection({ flag: flag, postID: id }));
@@ -33,11 +35,23 @@ const Post: React.FC<postI> = ({ user, created_at,id }) => {
 						<Avatar
 							shape="square"
 							size={36}
-							icon={<UserOutlined />}
+							icon={
+								user.photo ? (
+									<Image
+										src={user.photo}
+										width={"100%"}
+										height={"100%"}
+									/>
+								) : (
+									<UserOutlined />
+								)
+							}
 						/>
 						<Space direction="vertical" style={{ rowGap: 0 }}>
 							<Typography>{user.username}</Typography>
-							<Typography>{created_at}</Typography>
+							<Typography>
+								{GetFormattedTime(created_at)}
+							</Typography>
 						</Space>
 					</Space>
 					<Button type="text">
@@ -45,7 +59,7 @@ const Post: React.FC<postI> = ({ user, created_at,id }) => {
 					</Button>
 				</Space>
 				<Layout style={cardImageLayoutStyles}>
-					<Image style={cardImageStyles} src={cardImg} />
+					<PostMediaList mediaList={media} />
 				</Layout>
 				<Space style={toolSectionStyles}>
 					<Space>

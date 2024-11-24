@@ -19,3 +19,8 @@ class FriendModelAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentModelAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(PostMedia)
+class PostMediaModelAdmin(admin.ModelAdmin):
+    pass

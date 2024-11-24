@@ -23,13 +23,21 @@ export interface UserI {
 export interface postI {
 	id: number;
 	content: string;
-	created_at: string;
+	created_at: Date;
 	user: UserI;
+	media: MediaContentI[]
 }
-
+export interface MediaContentI {
+	id: number;
+	content_type: "image" | "video";
+	file: string;
+	uploaded_at: string;
+}
 export interface commentI {
 	id: number;
 	content: string;
-	created_at: string;
+	created_at: Date;
 	user: UserI;
 }
+
+

@@ -1,4 +1,4 @@
-from mingle.models import Post
+from mingle.models import Post,PostMedia
 
 
 class PostRepository:
@@ -8,5 +8,3 @@ class PostRepository:
     def get_popular_posts(self) -> Post:
         """ TODO:Add filter for most liked posts """
         return self.model.objects.all()
-
-    

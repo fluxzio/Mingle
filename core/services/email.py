@@ -1,9 +1,6 @@
 from django.core.mail import send_mail
 from django.conf import settings
 
-
-
-
 class EmailService:
     def send_verification_code(self,recepient: str,code: str):
         send_mail(
@@ -15,3 +12,5 @@ class EmailService:
             recipient_list=[recepient,]
         )
         
+def get_email_service() -> EmailService:
+    return EmailService()

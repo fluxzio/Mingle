@@ -13,4 +13,11 @@ RUN pip install -r /core/req.txt
 ADD . /core/
 WORKDIR /core/
 
-CMD gunicorn core.wsgi:application -b 0.0.0.0:8000
+
+
+CMD python manage.py makemigrations \
+    && python manage.py migrate \
+    && python manage.py test \
+    && gunicorn core.wsgi:application -b 0.0.0.0:8000
+
+    

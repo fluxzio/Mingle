@@ -1,10 +1,13 @@
 services:
   db:
     image: postgres:latest
+    container_name: postgres
     env_file:
       - .env.docker
     ports:
       - 5432:5432
+    networks:
+      - minglenet
   core:
     build: /core/
     env_file:
@@ -13,6 +16,8 @@ services:
       - 8000:8000
     depends_on:
       - db
+    networks:
+      - minglenet
 
   app:
     build: /mingle/
@@ -20,5 +25,10 @@ services:
       - 5173:5173
     depends_on:
       - core
+    networks:
+      - minglenet
 
     
+networks:
+  minglenet:
+    name: mingle-net

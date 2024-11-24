@@ -6,11 +6,11 @@ import { postAPI } from "../services/postService";
 
 
 const PostsList: React.FC = () => {
-    const {data: posts} = postAPI.useFetchAllPostsQuery(null)
+    const {data: posts,refetch} = postAPI.useFetchAllPostsQuery(null)
 
     useEffect(() => {
-        console.log(posts)
-    },[])
+		refetch()
+    },[refetch])
 
 	return (
 		<List style={listStyles}>

@@ -1,42 +1,47 @@
+from PIL import Image
+from moviepy import VideoFileClip
+import os
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.forms import ValidationError
-
+from django.core.validators import FileExtensionValidator
+from utils.utils import post_media_directory_path
 User = get_user_model()
 
 
 class Post(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     content = models.TextField(max_length=3000)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Post by {self.user.username} created at {self.created_at}"
+        return f"Создано {self.user.username} в {self.created_at}"
 
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
-        
+
+
 class Like(models.Model):
-    LIKE_CHOICES = [
-        ('like', 'Like'),
-        ('dislike', 'Dislike'),
-    ]
+    class LIKE_CHOICES(models.TextChoices):
+        LIKE = 'Like'
+        DISLIKE = 'Dislike'
+
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
-    like_type = models.CharField(max_length=7, choices=LIKE_CHOICES)
+    like_type = models.CharField(max_length=7, choices=LIKE_CHOICES.choices)
     created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        # Уникальность сочетания (пользователь, пост, тип лайка)
         unique_together = ('user', 'post')
 
     def __str__(self):
-        return f"{self.user.username} {self.like_type}d post {self.post.id}"
+        return f"{self.user.username}  {'лайкнул' if self.like_type == Like.LIKE_CHOICES.LIKE else 'дизлайкнул'} пост {self.post.id}"
 
     class Meta:
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
+
 
 class Friend(models.Model):
     user = models.ForeignKey(
@@ -45,17 +50,14 @@ class Friend(models.Model):
         to=User, on_delete=models.CASCADE, related_name='friends')
 
     class Meta:
-        # Гарантируем уникальность пары (user, friend) и наоборот
         unique_together = ('user', 'friend')
 
     def clean(self):
-        # Проверка, чтобы не добавлять обратную связь, если она уже существует
         if Friend.objects.filter(user=self.friend, friend=self.user).exists():
             raise ValidationError(
                 "Friendship already exists in reverse direction.")
 
     def save(self, *args, **kwargs):
-        # Вызываем clean() при сохранении, чтобы пройти проверку
         self.clean()
         super().save(*args, **kwargs)
 
@@ -66,34 +68,100 @@ class Friend(models.Model):
         verbose_name = 'Друг'
         verbose_name_plural = 'Друзья'
 
+
 class SavedPost(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
 
-
     class Meta:
-            # Уникальность сочетания (пользователь, пост), чтобы избежать дублирования сохранённых постов
-            unique_together = ('user', 'post')
+        unique_together = ('user', 'post')
 
     def __str__(self):
         return f"Post {self.post.id} saved by {self.user.username}"
-        
+
+
 class SharedPost(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    post = models.ForeignKey(to=Post, on_delete=models.CASCADE,related_name='shared_posts')
-    shared_friend = models.ForeignKey(to=User,on_delete=models.CASCADE,related_name='shared_friends')
+    post = models.ForeignKey(
+        to=Post, on_delete=models.CASCADE, related_name='shared_posts')
+    shared_friend = models.ForeignKey(
+        to=User, on_delete=models.CASCADE, related_name='shared_friends')
     share_string = models.URLField()
-    
-    
+
+
 class Comment(models.Model):
-    post = models.ForeignKey(Post,on_delete=models.CASCADE)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
-    created_at = models.DateField(auto_now_add=True)
-    
+    created_at = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return f"Комментарий от {self.user.username}, оставлен {self.created_at}"
-    
+
     class Meta:
         verbose_name = 'Коментарий'
         verbose_name_plural = 'Коментарий'
+
+
+class PostMedia(models.Model):
+    class MediaType(models.TextChoices):
+        IMAGE = 'image'
+        VIDEO = 'video'
+
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='media')
+    content_type = models.CharField(
+        max_length=10,
+        choices=MediaType.choices,
+    )
+    file = models.FileField(
+        upload_to=post_media_directory_path,
+        validators=[
+            FileExtensionValidator(allowed_extensions=[
+                'jpg', 'jpeg', 'png', 'mp4', 'mov', 'avi'])
+        ]
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Медиа к посту {self.post.pk}"
+    
+
+    def save(self, *args, **kwargs):
+        """Сохраняем объект, чтобы получить доступ к файлу."""
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+        try:
+            file_extension = os.path.splitext(self.file.name)[-1].lower()
+
+            if file_extension in ['.jpg', '.jpeg', '.png', '.gif']:
+                self.content_type = 'image'
+                try:
+                    with Image.open(self.file.path) as img:
+                        img.verify()
+                except Exception:
+                    raise ValueError("Неправильный файл изображения.")
+
+            elif file_extension in ['.mp4', '.mov', '.avi', '.mkv']:
+                self.content_type = 'video'
+                try:
+                    with VideoFileClip(self.file.path) as video:
+                        if video.duration > 300:  # Ограничение в 5 минут
+                            raise ValueError(
+                                "Видео не может длиться больше 5 минут.")
+                except Exception as e:
+                    raise ValueError(f"Неправильный видеофайл: {e}")
+            else:
+                raise ValueError(
+                    "Неподдерживаемый тип файла. Разрешены только фото и видео.")
+
+            super().save(update_fields=["content_type"])
+
+        except ValueError as e:
+            if is_new:
+                self.delete() 
+            raise e
+    
+    class Meta:
+        verbose_name = 'Медиа'
+        verbose_name_plural = 'Медиа'

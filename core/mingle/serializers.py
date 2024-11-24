@@ -8,11 +8,18 @@ class UserPostSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id','username','photo']
 
+
+class MediaPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostMedia
+        fields = ['id', 'content_type', 'file', 'uploaded_at']
+
 class PostSerializer(serializers.ModelSerializer):
     user = UserPostSerializer()
+    media = MediaPostSerializer(many=True, read_only=True)
     class Meta:
         model = Post
-        fields = ['id', 'content','created_at','user']
+        fields = ['id', 'content','created_at','user','media']
 
         
 class CommentSerializer(serializers.ModelSerializer):
@@ -27,3 +34,4 @@ class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
         fields = ['id','friend',]
+        
