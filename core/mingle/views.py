@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView
 from .serializers import *
 from .models import *
 from utils.types import InjectedHttpRequest
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class PopularPostListView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request: InjectedHttpRequest):
         service: "PostService" = request.container.get('post-service')
@@ -20,7 +20,7 @@ class PopularPostListView(APIView):
 
 
 class CommentsListView(ListAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
@@ -32,4 +32,13 @@ class CommentsListView(ListAPIView):
 class RecommendedFriendsListView(ListAPIView):
     queryset = Friend.objects.all()
     serializer_class = FriendSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+
+class CommentCreateAPIView(CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentCreateSerializer
+
+    

@@ -2,16 +2,17 @@ import { JWTTokenT } from "./types";
 
 export interface AuthState {
 	isAuth: boolean;
-	user_id: number | null;
-	username: string | null;
-	password: string | null;
-	photo: string | null;
-	tokens: JWTTokenT | {};
+	tokens:
+		| JWTTokenT
+		| {
+				access: null;
+				refresh: null;
+		  };
 }
 
 export interface CommentState {
 	isOpenCommentSection: boolean;
-	activePostID: number | null
+	activePostID: number | null;
 }
 
 export interface UserI {
@@ -25,7 +26,12 @@ export interface postI {
 	content: string;
 	created_at: Date;
 	user: UserI;
-	media: MediaContentI[]
+	media: MediaContentI[];
+	likes: number;
+	is_liked: {
+		id: number;
+		like_type: string;
+	} | null;
 }
 export interface MediaContentI {
 	id: number;
@@ -40,4 +46,25 @@ export interface commentI {
 	user: UserI;
 }
 
+export interface createCommentRequestT {
+	post: {
+		id: number;
+	};
+	user: {
+		id: number;
+	};
+	content: string;
+}
 
+export interface UserLoginI {
+	username: string;
+	password: string;
+}
+
+export interface UserCreationI {
+	first_name: string;
+	last_name: string;
+	email: string;
+	username: string;
+	password: string;
+}

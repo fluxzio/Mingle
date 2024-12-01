@@ -1,12 +1,12 @@
 import { listStyles } from "../styles/comment";
-import { List } from "antd";
+import { Empty, List } from "antd";
 import React, { useEffect } from "react";
 import Post from "./Post";
 import { postAPI } from "../services/postService";
 
 
 const PostsList: React.FC = () => {
-    const {data: posts,refetch} = postAPI.useFetchAllPostsQuery(null)
+    const {data: posts,refetch} = postAPI.useFetchAllPostsQuery()
 
     useEffect(() => {
 		refetch()
@@ -21,7 +21,7 @@ const PostsList: React.FC = () => {
 					</List.Item>
 				))
 			) : (
-				null
+				<Empty description={"Нет постов"} />
 			)}
 		</List>
 	);

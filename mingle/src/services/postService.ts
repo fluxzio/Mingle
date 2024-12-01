@@ -1,11 +1,13 @@
 import { commentI, postI } from "../interfaces";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "../store/store";
+import baseQueryWithReauth from "../utils/baseQuery";
 
 export const postAPI = createApi({
 	reducerPath: "postAPI",
-	baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/mingle/api/" }),
+	baseQuery: baseQueryWithReauth,
 	endpoints: (build) => ({
-		fetchAllPosts: build.query<postI[], null>({
+		fetchAllPosts: build.query<postI[], void>({
 			query: () => ({
 				url: "/posts/all/",
 			}),

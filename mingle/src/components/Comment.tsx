@@ -14,6 +14,7 @@ import { GetFormattedTime } from "../utils/time";
 const Comment: React.FC<commentI> = ({ user, content, created_at }) => {
 	const [expanded, setExpanded] = React.useState(false);
 	const [rows, setRows] = React.useState(2);
+
 	return (
 		<List.Item>
 			<Space style={commentCardStyles} direction="vertical">

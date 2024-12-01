@@ -6,6 +6,8 @@ import {
 	DislikeOutlined,
 	CommentOutlined,
 	BookOutlined,
+	LikeFilled,
+	DislikeFilled,
 } from "@ant-design/icons";
 import React from "react";
 import cardImg from "../assets/card-img.jpg";
@@ -18,11 +20,11 @@ import {
 } from "../styles/post";
 import { useAppDispatch } from "../store/hooks";
 import { toggleCommentSection } from "../store/features/slices/comments";
-import { postI } from "@/interfaces";
+import { postI } from "../interfaces";
 import { GetFormattedTime } from "../utils/time";
 import PostMediaList from "./PostMediaList";
 
-const Post: React.FC<postI> = ({ user, created_at, id, media }) => {
+const Post: React.FC<postI> = ({ user, created_at, id, media,is_liked,likes }) => {
 	const dispath = useAppDispatch();
 	const toggleComments = (flag: boolean) => {
 		dispath(toggleCommentSection({ flag: flag, postID: id }));
@@ -64,10 +66,20 @@ const Post: React.FC<postI> = ({ user, created_at, id, media }) => {
 				<Space style={toolSectionStyles}>
 					<Space>
 						<Button type="text">
-							<LikeOutlined />
+							{is_liked != null &&
+							is_liked.like_type === "Like" ? (
+								<LikeFilled />
+							) : (
+								<LikeOutlined />
+							)}
 						</Button>
 						<Button type="text">
-							<DislikeOutlined />
+							{is_liked != null &&
+							is_liked.like_type === "Dislike" ? (
+								<DislikeFilled />
+							) : (
+								<DislikeOutlined />
+							)}
 						</Button>
 						<Button
 							type="text"

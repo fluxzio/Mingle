@@ -19,6 +19,8 @@ const playerWrapperStyles: React.CSSProperties = {
 	display: "flex",
 	justifySelf: "center",
 	position: "relative",
+	width: '100%',
+	height: '100%'
 };
 
 const ButtonStyles: React.CSSProperties = {
@@ -56,7 +58,15 @@ const CarouselItem: React.FC<MediaContentI> = ({ file, content_type }) => {
 	return (
 		<div style={carouselItemStyles}>
 			{content_type === "image" ? (
-				<Image src={file} style={{ borderRadius: 10 }} />
+				<Layout>
+					<Image
+						src={file}
+						style={{
+							height: "100%",
+							borderRadius: 10,
+						}}
+					/>
+				</Layout>
 			) : (
 				<Layout
 					style={playerWrapperStyles}
@@ -64,9 +74,9 @@ const CarouselItem: React.FC<MediaContentI> = ({ file, content_type }) => {
 				>
 					<ReactPlayer
 						url={file}
-						height={600}
+						width={'100%'}
 						playing={playing}
-                        muted={muted}
+						muted={muted}
 						onPause={() => setPlaying(false)}
 						onEnded={() => setPlaying(false)}
 					/>
@@ -84,7 +94,7 @@ const CarouselItem: React.FC<MediaContentI> = ({ file, content_type }) => {
 							style={muteButtonStyles}
 							onClick={(e) => {
 								e.stopPropagation();
-                                setMuted(false)
+								setMuted(false);
 							}}
 						/>
 					) : (
@@ -92,7 +102,7 @@ const CarouselItem: React.FC<MediaContentI> = ({ file, content_type }) => {
 							style={muteButtonStyles}
 							onClick={(e) => {
 								e.stopPropagation();
-                                setMuted(true);
+								setMuted(true);
 							}}
 						/>
 					)}

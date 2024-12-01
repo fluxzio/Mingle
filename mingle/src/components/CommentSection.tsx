@@ -1,33 +1,41 @@
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { Layout, List } from "antd";
-import React, { useEffect, useState } from "react";
+import { Empty, Layout, List } from "antd";
+import React, { useEffect } from "react";
 import { commentSectionStyles } from "../styles/comment";
 import Comment from "./Comment";
 import { postAPI } from "../services/postService";
+import CommentInput from "./CommentInput";
 
 
+
+const commentListSectionStyles: React.CSSProperties = {
+	overflow: 'auto',
+
+} 
 const CommentSection: React.FC = () => {
 	const currentPostID = useAppSelector(
 		(state) => state.comments.activePostID
 	);
 	const { data: comments, refetch } =
 		postAPI.useFetchCommentsByPostQuery(currentPostID);
+
 	const dispath = useAppDispatch();
 	useEffect(() => {
-		if (currentPostID) {
+		if (currentPostID != null) {
 			refetch();
 		}
-	}, [currentPostID, refetch]);
+	}, [refetch]);
 
 	return (
 		<Layout style={commentSectionStyles}>
-			<List>
+			<List style={commentListSectionStyles}>
 				{comments && comments.length > 0
 					? comments.map((value) => (
 							<Comment key={value.id} {...value} />
 					  ))
-					: null}
+					: <Empty description={'Нет комментариев'}/>}
 			</List>
+			<CommentInput />
 		</Layout>
 	);
 };

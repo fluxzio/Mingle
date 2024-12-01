@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv,find_dotenv
+
 load_dotenv(find_dotenv())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
-
+API_URL = 'https://yp223d.api.infobip.com'
+API_KEY = 'b05c12de98553a42d1e67d9572f07c85-bd2a038a-7658-4eea-9d28-12cf9de04e5e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
@@ -90,7 +92,7 @@ DATABASES = {
         "NAME": os.getenv('POSTGRES_DB'),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": "postgres",
+        "HOST": os.getenv("POSTGRES_HOST"),
         "PORT": "5432",
     }
 }
@@ -156,6 +158,3 @@ REST_FRAMEWORK = {
 # ]
 
 CORS_ALLOW_ALL_ORIGINS = True # dev only
-
-
-DEFAULT_FROM_EMAIL = 'fluxiodev@gmail.com'

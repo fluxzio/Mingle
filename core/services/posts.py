@@ -18,6 +18,6 @@ class PostService:
             posts, many=True, context={"request": request})
         
         return Response(serialized.data)
-
+    
 def get_post_service() -> PostService:
     return PostService(PostRepository())

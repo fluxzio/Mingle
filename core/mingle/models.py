@@ -28,10 +28,17 @@ class Like(models.Model):
         DISLIKE = 'Dislike'
 
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    post = models.ForeignKey(to=Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(to=Post, on_delete=models.CASCADE,related_name='likes')
     like_type = models.CharField(max_length=7, choices=LIKE_CHOICES.choices)
     created_at = models.DateTimeField(auto_now=True)
 
+    def clean(self):
+        if Like.objects.filter(user=self.user,post=self.post):
+            raise ValidationError(
+                "Невозможно поставить лайк или дизлайк дважды в 1 посте."
+            )
+        return super().clean()
+    
     class Meta:
         unique_together = ('user', 'post')
 
@@ -55,14 +62,17 @@ class Friend(models.Model):
     def clean(self):
         if Friend.objects.filter(user=self.friend, friend=self.user).exists():
             raise ValidationError(
-                "Friendship already exists in reverse direction.")
-
+                f"{self.user} уже в друзьях с {self.friend}.")
+        if self.user.pk == self.friend.pk:
+            raise ValidationError(
+                "Невозможно добавить в друзья себя.")
+            
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user.username} is friends with {self.friend.username}"
+        return f"{self.user.username} в друзьях у {self.friend.username}"
 
     class Meta:
         verbose_name = 'Друг'

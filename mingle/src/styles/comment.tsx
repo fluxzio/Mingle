@@ -7,8 +7,9 @@ export const commentSectionStyles: React.CSSProperties = {
 	display: "flex",
 	flexDirection: "column",
 	rowGap: 24,
-    padding: 12,
-	backgroundColor: 'transparent'
+	padding: 12,
+	backgroundColor: "transparent",
+	height: "100%",
 };
 
 export const contentStyle: React.CSSProperties = {
