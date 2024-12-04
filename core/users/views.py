@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
-from .serializers import UserSerializer
+from .serializers import UserRegistrationSerializer, UserSerializer
 from utils.types import InjectedHttpRequest
 from typing import TYPE_CHECKING
 from .models import User
@@ -37,5 +37,5 @@ class UserSendEmailView(APIView):
 class UserCreateView(CreateAPIView):
     permission_classes = [AllowAny]
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserRegistrationSerializer
     

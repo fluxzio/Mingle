@@ -35,7 +35,7 @@ const CommentSection: React.FC = () => {
 					  ))
 					: <Empty description={'Нет комментариев'}/>}
 			</List>
-			<CommentInput />
+			<CommentInput refetchComments={refetch} />
 		</Layout>
 	);
 };

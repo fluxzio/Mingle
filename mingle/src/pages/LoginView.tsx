@@ -1,17 +1,21 @@
-import { UserLoginI } from "@/interfaces";
+import { UserLoginI } from "../interfaces";
 import { userAPI } from "../services/userService";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Button, Flex, Form, FormProps, Input, Layout, message, Typography } from "antd";
-import React, { useEffect } from "react";
+import { Button, Flex, Form, Input, Layout, message, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setAccessToken, setAuth, setRefreshToken } from "../store/features/slices/auth";
+import {
+	setAccessToken,
+	setAuth,
+	setRefreshToken,
+} from "../store/features/slices/auth";
+import CustomSpin from "../components/CustomSpin";
 
 const LoginView: React.FC = () => {
-	const isAuth = useAppSelector(state => state.auth.isAuth)
-	const navigate = useNavigate()
+	const isAuth = useAppSelector((state) => state.auth.isAuth);
+	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-	
 	const [login, { isLoading, isError, error }] = userAPI.useLoginMutation();
 	useEffect(() => {
 		if (isAuth) {
@@ -22,20 +26,31 @@ const LoginView: React.FC = () => {
 	const onFinish = async (values: UserLoginI) => {
 		try {
 			const response = await login(values).unwrap();
-			dispatch(setAccessToken({
-				access: response.access
-			}));
-			dispatch(setRefreshToken({
-				refresh: response.refresh
-			}));
-			dispatch(setAuth({
-				flag: true
-			}))
+			dispatch(
+				setAccessToken({
+					access: response.access,
+				})
+			);
+			dispatch(
+				setRefreshToken({
+					refresh: response.refresh,
+				})
+			);
+			dispatch(
+				setAuth({
+					flag: true,
+				})
+			);
 			navigate("/");
 		} catch (err) {
 			message.error("Неправильный пароль или имя пользователя.");
 		}
 	};
+
+	if (isLoading) {
+		return <CustomSpin />;
+	}
+
 	return (
 		<Layout
 			style={{
@@ -92,7 +107,10 @@ const LoginView: React.FC = () => {
 					<Button block type="primary" htmlType="submit">
 						Войти
 					</Button>
-					или <a href="">Зарегистрироваться сейчас!</a>
+					или{" "}
+					<Typography.Link onClick={() => navigate("/signup/")}>
+						Зарегистрироваться сейчас!
+					</Typography.Link>
 				</Form.Item>
 			</Form>
 		</Layout>
@@ -100,5 +118,3 @@ const LoginView: React.FC = () => {
 };
 
 export default LoginView;
-
-

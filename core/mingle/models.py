@@ -37,6 +37,9 @@ class Like(models.Model):
             raise ValidationError(
                 "Невозможно поставить лайк или дизлайк дважды в 1 посте."
             )
+        if self.like_type not in Like.LIKE_CHOICES.values:
+            raise ValidationError(
+                "Тип лайка должен соответствовать [Like, Dislike]")
         return super().clean()
     
     class Meta:

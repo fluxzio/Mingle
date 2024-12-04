@@ -1,6 +1,7 @@
 import { JWTTokenT } from "./types";
 
 export interface AuthState {
+	user_id: number | null;
 	isAuth: boolean;
 	tokens:
 		| JWTTokenT
@@ -47,18 +48,18 @@ export interface commentI {
 }
 
 export interface createCommentRequestT {
-	post: {
-		id: number;
-	};
-	user: {
-		id: number;
-	};
+	post:number;
 	content: string;
 }
 
 export interface UserLoginI {
 	username: string;
 	password: string;
+}
+
+export interface UserFriendI {
+	first_name: string;
+	last_name: string;
 }
 
 export interface UserCreationI {

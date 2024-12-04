@@ -3,15 +3,19 @@ import { Empty, List } from "antd";
 import React, { useEffect } from "react";
 import Post from "./Post";
 import { postAPI } from "../services/postService";
+import CustomSpin from "./CustomSpin";
 
 
 const PostsList: React.FC = () => {
-    const {data: posts,refetch} = postAPI.useFetchAllPostsQuery()
+    const {data: posts,refetch,isLoading} = postAPI.useFetchAllPostsQuery()
 
     useEffect(() => {
 		refetch()
     },[refetch])
 
+	if (isLoading) {
+		return <CustomSpin />;
+	}
 	return (
 		<List style={listStyles}>
 			{posts && posts.length > 0 ? (

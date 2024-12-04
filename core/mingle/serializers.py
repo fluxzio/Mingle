@@ -57,9 +57,26 @@ class FriendSerializer(serializers.ModelSerializer):
     class Meta:
         model = Friend
         fields = ['id','friend',]
-        
+           
         
 class CommentCreateSerializer(serializers.ModelSerializer):
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
     class Meta:
         model = Comment
-        fields = ['user','post','content']
+        fields = ['post','content']
+        
+    def create(self, validated_data):
+        request = self.context.get('request')
+        validated_data['user'] = request.user
+        return super().create(validated_data)
+    
+class PostLikeSerializer(serializers.ModelSerializer):
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+    class Meta:
+        model = Like
+        fields = ['post','like_type',]
+    
+    def create(self, validated_data):
+        request = self.context.get('request')
+        validated_data['user'] = request.user
+        return super().create(validated_data)

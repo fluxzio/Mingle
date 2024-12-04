@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "../../../interfaces";
 
-
 // Define the initial state using that type
 const initialState: AuthState = {
+	user_id: null,
 	isAuth: false,
 	tokens: {
 		access: null,
-		refresh: null
-	}
+		refresh: null,
+	},
 };
 
 export const authSlice = createSlice({
@@ -34,10 +34,12 @@ export const authSlice = createSlice({
 			state.isAuth = false;
 			state.tokens.access = null;
 			state.tokens.refresh = null;
+			state.user_id = null
 		},
 	},
 });
 
-export const { setAccessToken,setRefreshToken,setAuth,clearAll } = authSlice.actions;
+export const { setAccessToken, setRefreshToken, setAuth, clearAll } =
+	authSlice.actions;
 
 export default authSlice.reducer;

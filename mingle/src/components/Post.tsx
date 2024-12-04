@@ -29,6 +29,17 @@ const Post: React.FC<postI> = ({ user, created_at, id, media,is_liked,likes }) =
 	const toggleComments = (flag: boolean) => {
 		dispath(toggleCommentSection({ flag: flag, postID: id }));
 	};
+	
+	const onClickReaction = (type: string) => {
+		if (type === 'Like') {
+			// do actions 
+		}
+
+		if (type === 'Dislike') {
+			// do actions
+		}
+	}
+
 	return (
 		<Card size="small" style={postStyles}>
 			<Layout style={{ backgroundColor: "transparent" }}>

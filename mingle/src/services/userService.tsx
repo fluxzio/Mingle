@@ -1,5 +1,5 @@
 import { JWTTokenT } from "../types";
-import { UserCreationI, UserLoginI } from "../interfaces";
+import { UserCreationI, UserFriendI, UserLoginI } from "../interfaces";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const userAPI = createApi({
@@ -9,16 +9,16 @@ export const userAPI = createApi({
 		login: build.mutation<JWTTokenT, UserLoginI>({
 			query: (credentials) => ({
 				url: "/token/",
-                method: 'POST',
+				method: "POST",
 				body: credentials,
 			}),
 		}),
-		register: build.mutation<JWTTokenT, UserCreationI>({
+		signup: build.mutation<JWTTokenT, UserCreationI>({
 			query: (credentials) => ({
-				url: '/register/',
-				method: 'POST',
-				body: credentials
-			})
-		}) 
+				url: "/register/",
+				method: "POST",
+				body: credentials,
+			}),
+		}),
 	}),
 });

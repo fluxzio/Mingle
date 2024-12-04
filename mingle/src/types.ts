@@ -6,3 +6,7 @@ export type JWTTokenT = {
 export type ProtectedRouteT = {
 	children: React.ReactNode
 }
+
+export type CommentInputProps = {
+	refetchComments: () => void;
+}

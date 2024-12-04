@@ -1,39 +1,53 @@
 import { commentAPI } from "../services/commentService";
 import { useAppSelector } from "../store/hooks";
 import { SendOutlined } from "@ant-design/icons";
-import { Input } from "antd";
-import React, { useState } from "react";
+import { Button, Form, Input } from "antd";
+import React, { useEffect, useState } from "react";
+import { CommentInputProps } from "../types";
 
-const commentInputStyles: React.CSSProperties = {
-	bottom: 10,
-	position: "sticky",
-};
+type CommentFieldType = {
+	content: string
+}
 
-const CommentInput: React.FC = () => {
-    const [content,setContent] = useState<string | null>(null)
-    const [createComment, ] = commentAPI.useCreateCommentMutation()
-    const currentPostID = useAppSelector(
-        (state) => state.comments.activePostID
-    );
-    const onClickSend = () => {
-        console.log(currentPostID,content)
-        if (currentPostID && content) {
+const CommentInput: React.FC<CommentInputProps> = ({refetchComments}) => {
+	const [createComment] = commentAPI.useCreateCommentMutation();
+	const currentPostID = useAppSelector(
+		(state) => state.comments.activePostID
+	);
+
+	const onClickSend =  (values: CommentFieldType) => {
+		if (currentPostID && values.content) {
 			createComment({
-				post: { id: currentPostID },
-				user: { id: 1 },
-				content: content,
+				post: currentPostID,
+				content: values.content,
 			});
+			refetchComments()
 		}
+	};
 
-    }
 	return (
-		<Input
-			showCount
-			maxLength={2500}
-			style={commentInputStyles}
-			width={"100%"}
-			suffix={<SendOutlined style={{ cursor: "pointer" }} onClick={onClickSend}/>}
-		/>
+		<Form style={{ position: "sticky", bottom: 10 }} onFinish={onClickSend}>
+			<Form.Item<CommentFieldType>
+				name="content"
+				rules={[
+					{
+						required: true,
+						message: "Коментарии не может быть пустым!",
+					},
+				]}
+			>
+				<Input
+					showCount
+					maxLength={2500}
+					width={"100%"}
+					suffix={
+						<Button htmlType="submit" type="text">
+							<SendOutlined style={{ cursor: "pointer" }} />
+						</Button>
+					}
+				/>
+			</Form.Item>
+		</Form>
 	);
 };
 
